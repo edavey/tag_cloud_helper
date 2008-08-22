@@ -36,8 +36,8 @@ module TagCloudHelper
       
       the_cloud.each do |tag,id,fsize,count|
         output <<    "<span>"
-        output <<    "<a title=\"count\""
-        output <<        'alt="count"'
+        output <<    "<a title=\"#{count}\""
+        output <<        "alt=\"#{count}\""
         output <<        "class=\"tag_#{id}\" "
         output <<        "style=\"font-size:#{fsize}px;\""
         output <<        "href=\"/articles/?tag=#{tag}\">"
