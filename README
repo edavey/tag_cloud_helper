@@ -1,13 +1,13 @@
-= Tag Cloud Helper v1.0
+h1. Tag Cloud Helper v1.0
 
-== Dependency
+h2. Dependency
 
 Tag Cloud Helper depends on acts_as_taggable_on_steroids:
   http://svn.viney.net.nz/things/rails/plugins/acts_as_taggable_on_steroids
 
 
 
-== To use Tag Cloud Helper
+h2. To use Tag Cloud Helper
 
 Directions to get the helper up and running for your install:
 
@@ -26,12 +26,12 @@ Directions to get the helper up and running for your install:
 
 
 
-== License
+h2. License
 
 Tag Cloud Helper is released under the MIT license.
 
 
-= Credits
+h2. Credits
 
 Rounded Corners Helper was created by Sergio R. de la Garza of Development and Technology Advisors S.A. de C.V. (http://www.devtech.com.mx/)
 
