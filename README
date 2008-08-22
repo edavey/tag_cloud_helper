@@ -1,0 +1,38 @@
+= Tag Cloud Helper v1.0
+
+== Dependency
+
+Tag Cloud Helper depends on acts_as_taggable_on_steroids:
+  http://svn.viney.net.nz/things/rails/plugins/acts_as_taggable_on_steroids
+
+
+
+== To use Tag Cloud Helper
+
+Directions to get the helper up and running for your install:
+
+	1. Install the plugin by runnung:
+	    script/plugin install git://github.com/sgarza/tag_cloud_helper.git
+	    
+	    This will install the plugin in your vendor/plugins directory.
+	    
+	2. You will need to change the line #43 in vendor/plugins/tag_cloud_helper/lib/tag_cloud_helper.rb in order to link to your proper tag filter controller
+	
+	3. The following is the helper method, the parameters are:
+	  
+	  "The model that has act_as_taggable_on_steroids" 
+
+		<%= the_cloud 'article' -%>
+
+
+
+== License
+
+Tag Cloud Helper is released under the MIT license.
+
+
+= Credits
+
+Rounded Corners Helper was created by Sergio R. de la Garza of Development and Technology Advisors S.A. de C.V. (http://www.devtech.com.mx/)
+
+
