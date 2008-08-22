@@ -40,7 +40,7 @@ module TagCloudHelper
         output <<        'alt="count"'
         output <<        "class=\"tag_#{id}\" "
         output <<        "style=\"font-size:#{fsize}px;\""
-        output <<        "href=\"/articles/?tag=<%= tag -%>\">"
+        output <<        "href=\"/articles/?tag=#{tag}\">"
         output <<        tag + " "
         output <<    "</a>"
         output <<    "</span>"
