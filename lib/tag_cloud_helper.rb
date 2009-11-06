@@ -1,51 +1,42 @@
+
 module TagCloudHelper
-  def tags_cloud(model, limit=30)
-    options = {
-      :select => "count(taggings.id) as count_all, tags.name as tag_name, tag_id",
-      :conditions => {:taggable_type => model.to_s },
-      :joins => " left outer join tags on tags.id=taggings.tag_id" ,
-      :group => 'tag_id',
-      :order => 'count_all desc',
-      :limit => limit
-    }
 
-    sql = Tagging.send(:construct_finder_sql, options)
-
-    taggings = ActiveRecord::Base.connection.select_all(sql)
-
+  def tag_cloud(facet, options)
+    options  = {:limit => 30}.merge(options)
+    taggings = facet[0..(options[:limit] - 1)]
     return [] if taggings.blank?
 
-    maxlog = Math.log(taggings.first['count_all'])
-    minlog = Math.log(taggings.last['count_all'])
+    maxlog = Math.log(taggings.first.count)
+    minlog = Math.log(taggings.last.count)
     rangelog = maxlog - minlog;
-    rangelog = 1 if maxlog==minlog
+    rangelog = 1 if maxlog == minlog
     min_font = 10
     max_font = 30
     font_range = max_font - min_font
     cloud = []
-    taggings = taggings.sort{|a,b| a['tag_name'] <=> b['tag_name']}
+    taggings = taggings.sort { |a,b| a.value <=> b.value }
 
     taggings.each do |tagging|
-      font_size = min_font + font_range * (Math.log(tagging['count_all']) - minlog)/rangelog
-      cloud << [tagging['tag_name'], tagging['tag_id'], font_size.to_i, tagging['count_all']] 
+      font_size = min_font + font_range * ( Math.log(tagging.count) - minlog ) / rangelog
+      cloud << [tagging.value, font_size.to_i, tagging.count] 
     end
     
     the_cloud = cloud
+    safe_params = params.delete_if {|key, value| %w{action controller page}.include? key }   
+
      unless the_cloud.blank?
-      output = '<div id="cloud">'
-      
-      the_cloud.each do |tag,id,fsize,count|
-        output <<    "<span>"
-        output <<    "<a title=\"#{count}\""
-        output <<        "alt=\"#{count}\""
-        output <<        "class=\"tag_#{id}\" "
-        output <<        "style=\"font-size:#{fsize}px;\""
-        output <<        "href=\"/articles/?tag=#{tag}\">"
-        output <<        tag + " "
-        output <<    "</a>"
-        output <<    "</span>"
-      end 
-      output << "</div>"
+      output = content_tag(:div, :id => options[:context].to_s.pluralize, :class => 'cloud') do   
+        the_cloud.map do |tag, fsize, count|
+          content_tag(:span) do  
+            opts = {:title => tag, :alt => tag, :style => "font-size:#{fsize}px;", 
+                    :class => "tag_#{count}", :id => "tag_#{tag}",
+                    :href  => polymorphic_path(
+                                eval("options[:model]").to_s.pluralize, safe_params.merge(
+                                  eval("options[:context]") => tag)) }    
+            content_tag(:a, tag + " ", opts)          
+          end        
+        end 
+      end
     end
     
     return output
